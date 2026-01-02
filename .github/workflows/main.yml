@@ -1,0 +1,36 @@
+name: DUModz Bot 24/7
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Running Bot
+        run: |
+          # গিটহাব অ্যাকশন লিমিট এড়াতে লুপ
+          while true; do
+            python bot.py
+            echo "Bot crashed or restarted. Sleeping for 5 seconds..."
+            sleep 5
+          done
+        env:
+          PYTHONUNBUFFERED: 1

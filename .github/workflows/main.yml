@@ -1,20 +1,19 @@
-name: DUModz Bot 24/7
+name: DUModzBot_24_7
 
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+  schedule:
+    - cron: "0 */4 * * *" # প্রতি ৪ ঘণ্টা পর পর রান হবে
+  workflow_dispatch: # ম্যানুয়ালি অন করার জন্য
 
 jobs:
-  build:
+  run-bot:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -24,13 +23,7 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Running Bot
-        run: |
-          # গিটহাব অ্যাকশন লিমিট এড়াতে লুপ
-          while true; do
-            python bot.py
-            echo "Bot crashed or restarted. Sleeping for 5 seconds..."
-            sleep 5
-          done
+      - name: Run Telegram Bot
+        run: python bot.py
         env:
           PYTHONUNBUFFERED: 1

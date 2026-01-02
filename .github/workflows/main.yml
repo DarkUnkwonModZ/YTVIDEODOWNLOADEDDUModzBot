@@ -1,9 +1,9 @@
-name: DUModzBot_24_7
+name: DarkUnkwonModZ_Bot_24_7
 
 on:
   schedule:
     - cron: "0 */4 * * *" # প্রতি ৪ ঘণ্টা পর পর রান হবে
-  workflow_dispatch: # ম্যানুয়ালি অন করার জন্য
+  workflow_dispatch: # ম্যানুয়ালি রান করার জন্য
 
 jobs:
   run-bot:
@@ -21,7 +21,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Telegram Bot
         run: python bot.py
